@@ -1,34 +1,45 @@
-#define POWER 36
-#define LED_BUILTIN 4
-#define SIGNAL 39
-#define THRESHOLD
-#define TOUCH 2
-
+#define SENSOR_POWER 4
+#define SENSOR_VALUE 34
+#define touch_threshold 75
+#define TOUCH_SIGNAL 15
+#define LED 2
+int required_sensor_value = 0;
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(115200);
-  pinMode(POWER, OUTPUT);
-  pinMode(LED_BUILTIN, OUTPUT);
-  digitalWrite(POWER, LOW);
-  digitalWrite(LED_BUILTIN, LOW);
-  Serial.println("Hello, ESP32!");
+  pinMode(SENSOR_POWER, OUTPUT);
+  digitalWrite(SENSOR_POWER, LOW);
+  pinMode(LED, OUTPUT);
+  digitalWrite(LED, LOW);
+  // put your setup code here, to run once:
 }
 
 void loop() {
   // put your main code here, to run repeatedly:
-  digitalWrite(POWER, HIGH);
-  int value = analogRead(SIGNAL);
-  digitalWrite(POWER, LOW);
-  int touch = touchRead();
-  if (touch)
-  {
-    value = analogRead(SIGNAL);
-    if (value >= THRESHOLD)
-    {
-      Serial.println("Blah Blah\n");
-      digitalWrite(LED_BUILTIN, HIGH);
-    }
-  }
+ 
+  digitalWrite(SENSOR_POWER, HIGH);
+  int sensor_value = analogRead(SENSOR_VALUE);
+  digitalWrite(SENSOR_POWER, LOW);
 
-  delay(10); // this speeds up the simulation
+  int touch_value = touchRead(TOUCH_SIGNAL);
+
+  if (touch_value < touch_threshold) {
+    Serial.println(sensor_value);
+    required_sensor_value = sensor_value;
+    //Serial.println("required_sensor_value");
+    Serial.print(required_sensor_value);
+  }
+  if (sensor_value < required_sensor_value - 20) {
+    digitalWrite(LED, HIGH);
+    Serial.println("Water required to be filled");
+      Serial.print("Current Water Level : ");
+        Serial.print(sensor_value);
+    Serial.println();
+  } else if (sensor_value > required_sensor_value + 20) {
+    digitalWrite(LED, HIGH);
+    Serial.println("Water required to be emptied");
+      Serial.print("Current Water Level : ");
+        Serial.print(sensor_value);
+    Serial.println();
+  }
+  delay(5000);
 }
