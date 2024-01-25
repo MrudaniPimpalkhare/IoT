@@ -1,6 +1,6 @@
 
-#define TRIGGER 9
-#define ECHO 10
+#define TRIGGER 13
+#define ECHO 14
 #define SPEED 0.0343
 void setup() {
   // put your setup code here, to run once:
