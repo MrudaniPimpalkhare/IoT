@@ -1,4 +1,4 @@
-const int irSensorPin = 3;
+const int irSensorPin = 4;
 const int LED = 2;
 unsigned long lastDetectionTime = 0;
 const int detectionInterval = 10000;
@@ -10,22 +10,23 @@ void setup() {
 }
 
 void loop() {
+  digitalWrite(LED, LOW);
   int irSensorValue = digitalRead(irSensorPin);
-
-  if (irSensorValue == HIGH) {
-    Serial.println("Object detected - HIGH");
+  
+  while (irSensorValue == LOW) {
+    
 
     if ((millis() - lastDetectionTime) >= detectionInterval) {
       digitalWrite(LED, HIGH);
       Serial.println("Object detected for more than 10 seconds");
-    } else {
-      digitalWrite(LED, LOW);
+      break;
     }
-
-    lastDetectionTime = millis();
-  } else {
-    digitalWrite(LED, LOW);
+    irSensorValue = digitalRead(irSensorPin);
   }
+ 
+    
+    lastDetectionTime = millis();
+  
 
   delay(1000);
 }
