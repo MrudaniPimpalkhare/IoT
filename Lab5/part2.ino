@@ -1,5 +1,5 @@
 #include "DHT.h"
-#include "Servo.h"
+#include <Servo.h>
 #define DHTTYPE DHT11
 #define dht_dpin 3
 Servo servo1;
@@ -7,7 +7,7 @@ const int servoPin = 4;
 
 float temp;
 float humidity;
-DHT dht(dht_dpn, DHTTYPE)
+DHT dht(dht_dpin, DHTTYPE);
 float deg2rad(float in) {
     return in * M_PI / 180.0;
 }
@@ -15,7 +15,7 @@ void setup() {
   // put your setup code here, to run once:
   
   Serial.begin(115200);
-  Serial.println(F("DHTxx test!"));
+ 
   dht.begin();
   servo1.attach(
         servoPin, 
