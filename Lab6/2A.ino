@@ -35,9 +35,7 @@ void setup() {
 }
 
 void loop() {
-
   WiFiClient client = server.available();
-
 
   if (client) {
     String currentLine = "";
@@ -68,8 +66,8 @@ void loop() {
         }
       }
     }
+    client.stop(); // Move this inside the if(client) block
+    Serial.println("Client stopped, what will you do you loser");
+    delay(5000);
   }
-  client.stop();
-  Serial.println("Client stopped, what will you do you loser");
-  delay(5000);
 }
